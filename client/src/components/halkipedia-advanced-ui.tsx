@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import { Search, User, Settings, Zap, Book, Layers, Palette, Volume2, Moon, Sun, Grid, List } from 'lucide-react';
 
 const AdvancedHalkipedia = () => {
@@ -6,11 +7,21 @@ const AdvancedHalkipedia = () => {
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
   const [layoutType, setLayoutType] = useState('grid');
+  const [searchQuery, setSearchQuery] = useState('');
 
   useEffect(() => {
     // Simulating loading process
     setTimeout(() => setIsLoading(false), 3000);
   }, []);
+
+  const handleSearch = async () => {
+    try {
+      const response = await axios.post('/nlp', { text: searchQuery });
+      console.log('Search results:', response.data);
+    } catch (error) {
+      console.error('Error during search:', error);
+    }
+  };
 
   if (isLoading) {
     return (
@@ -34,6 +45,13 @@ const AdvancedHalkipedia = () => {
                 type="text"
                 placeholder="AI-Powered Search"
                 className={`py-2 px-4 pr-10 rounded-full ${isDarkMode ? 'bg-gray-700 text-white' : 'bg-white text-black'} w-64 focus:outline-none focus:ring-2 focus:ring-blue-300`}
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                onKeyPress={(e) => {
+                  if (e.key === 'Enter') {
+                    handleSearch();
+                  }
+                }}
               />
               <Search className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500" size={18} />
             </div>
@@ -147,7 +165,7 @@ const AdvancedHalkipedia = () => {
                 </button>
               </div>
             </div>
-            <button 
+            <button
               onClick={() => setShowSettings(false)}
               className={`mt-6 w-full ${isDarkMode ? 'bg-blue-600' : 'bg-blue-500'} text-white py-2 rounded`}
             >

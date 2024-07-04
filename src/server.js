@@ -9,6 +9,7 @@ const { processCMSData } = require('./cmsHandler');
 const { generateRecommendations } = require('./Recommendation_Engine/recommendationEngine');
 const { processUserInteractionData } = require('./User_Interaction/userInteractionHandler');
 const { processTextContent, generateTextContent } = require('./Natural_Language_Processing/nlpHandler');
+const { processImageContent, processVideoContent } = require('./vision_service');
 const app = express();
 const port = 3000;
 
@@ -186,8 +187,24 @@ app.post('/external-data', async (req, res) => {
 });
 
 // Image/Video Content route
-app.post('/image-video', (req, res) => {
-    res.json({ message: 'Image/Video Content route placeholder' });
+app.post('/image-video', async (req, res) => {
+    const { contentType, contentBuffer } = req.body;
+    if (!contentType || !contentBuffer) {
+        return res.status(400).json({ error: 'Invalid content input' });
+    }
+    try {
+        let result;
+        if (contentType === 'image') {
+            result = await processImageContent(contentBuffer);
+        } else if (contentType === 'video') {
+            result = await processVideoContent(contentBuffer);
+        } else {
+            return res.status(400).json({ error: 'Unsupported content type' });
+        }
+        res.json(result);
+    } catch (error) {
+        res.status(500).json({ error: 'Error processing content' });
+    }
 });
 
 // Text Content route

@@ -10,6 +10,7 @@ const { generateRecommendations } = require('./Recommendation_Engine/recommendat
 const { processUserInteractionData } = require('./User_Interaction/userInteractionHandler');
 // const { processTextContent, generateTextContent } = require('./Natural_Language_Processing/nlpHandler');
 const { processImageContent, processVideoContent } = require('./vision_service');
+const { answerQuestion } = require('./Natural_Language_Processing/nlpHandler');
 const app = express();
 const port = 3000;
 
@@ -26,20 +27,27 @@ app.get('/', (req, res) => {
 app.post('/orchestrate', orchestrateAIModels);
 
 // Natural Language Processing route
-app.post('/nlp', (req, res) => {
-    const { text } = req.body;
-    const result = processText(text);
-    res.json(result);
-});
-
-app.post('/process-text', async (req, res) => {
+app.post('/nlp', async (req, res) => {
     const { text } = req.body;
     if (!text) {
         return res.status(400).json({ error: 'Invalid text input' });
     }
     try {
-        // const result = await processTextContent(text);
-        // res.json(result);
+        const result = await processText(text);
+        res.json(result);
+    } catch (error) {
+        res.status(500).json({ error: 'Error processing NLP model prediction' });
+    }
+});
+
+app.post('/process-text', async (req, res) => {
+    const { question, passage } = req.body;
+    if (!question || !passage) {
+        return res.status(400).json({ error: 'Invalid input' });
+    }
+    try {
+        const answers = await answerQuestion(question, passage);
+        res.json(answers);
     } catch (error) {
         res.status(500).json({ error: 'Error processing text content' });
     }

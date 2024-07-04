@@ -6,6 +6,7 @@ const { orchestrateAIModels } = require('./AI_Orchestrator/orchestrator');
 const { processText } = require('./Natural_Language_Processing/nlp');
 const { mlModel, cvModel, kgModel } = require('./ML_Models/models');
 const { processCMSData } = require('./cmsHandler');
+const { generateRecommendations } = require('./Recommendation_Engine/recommendationEngine');
 const app = express();
 const port = 3000;
 
@@ -120,7 +121,12 @@ app.post('/text-content', (req, res) => {
 
 // Recommendation Engine route
 app.post('/recommendation', (req, res) => {
-    res.json({ message: 'Recommendation Engine route placeholder' });
+    const { userData } = req.body;
+    if (!userData) {
+        return res.status(400).json({ error: 'Invalid user data' });
+    }
+    const recommendations = generateRecommendations(userData);
+    res.json(recommendations);
 });
 
 // Automated Content Generation route

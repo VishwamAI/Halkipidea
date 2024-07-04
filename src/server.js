@@ -19,6 +19,30 @@ app.post('/orchestrate', (req, res) => {
     res.send('AI Orchestrator endpoint');
 });
 
+// Placeholder for Natural Language Processing route
+app.post('/nlp', (req, res) => {
+    // Logic for NLP model will go here
+    res.send('NLP model endpoint');
+});
+
+// Placeholder for Machine Learning Models route
+app.post('/ml', (req, res) => {
+    // Logic for ML models will go here
+    res.send('ML models endpoint');
+});
+
+// Placeholder for Computer Vision route
+app.post('/cv', (req, res) => {
+    // Logic for CV model will go here
+    res.send('CV model endpoint');
+});
+
+// Placeholder for Knowledge Graph route
+app.post('/kg', (req, res) => {
+    // Logic for KG model will go here
+    res.send('KG model endpoint');
+});
+
 // Start the server
 app.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`);

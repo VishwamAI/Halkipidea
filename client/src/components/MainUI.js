@@ -5,6 +5,7 @@ import './MainUI.css';
 const MainUI = () => {
     const [inputData, setInputData] = useState('');
     const [response, setResponse] = useState(null);
+    const [error, setError] = useState(null);
 
     const handleInputChange = (e) => {
         setInputData(e.target.value);
@@ -14,8 +15,10 @@ const MainUI = () => {
         try {
             const result = await axios.post('/orchestrate', { inputData });
             setResponse(result.data);
+            setError(null); // Clear any previous errors
         } catch (error) {
             console.error('Error submitting data:', error);
+            setError('An error occurred while submitting the data. Please try again.');
         }
     };
 
@@ -29,6 +32,11 @@ const MainUI = () => {
                 placeholder="Enter input data"
             />
             <button onClick={handleSubmit}>Submit</button>
+            {error && (
+                <div className="error">
+                    <p>{error}</p>
+                </div>
+            )}
             {response && (
                 <div className="response">
                     <h2>Response:</h2>

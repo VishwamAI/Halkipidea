@@ -1,6 +1,6 @@
 const tf = require('@tensorflow/tfjs-node');
 
-// Placeholder function for generating recommendations
+// Function for generating recommendations
 const generateRecommendations = (userData) => {
     // Define the structure of userData
     // Example structure: { preferences: [], pastInteractions: [], ... }
@@ -19,10 +19,13 @@ const generateRecommendations = (userData) => {
         { id: 3, title: 'Recommended Item 3', score: 0.8 }
     ];
 
-    // Placeholder logic to filter recommendations based on user preferences
+    // More sophisticated logic to filter recommendations based on user preferences and past interactions
     const filteredRecommendations = recommendations.filter(item => {
-        // Example: Check if item title contains any of the user's preferences
-        return preferences.some(pref => item.title.includes(pref));
+        // Check if item title contains any of the user's preferences
+        const matchesPreferences = preferences.some(pref => item.title.includes(pref));
+        // Check if item has been interacted with in the past
+        const notInteractedBefore = !pastInteractions.some(interaction => interaction.id === item.id);
+        return matchesPreferences && notInteractedBefore;
     });
 
     return filteredRecommendations.length > 0 ? filteredRecommendations : recommendations;

@@ -215,9 +215,40 @@ app.post('/image-video', async (req, res) => {
     }
 });
 
-// Text Content route
-app.post('/text-content', (req, res) => {
-    res.json({ message: 'Text Content route placeholder' });
+app.post('/text-content', async (req, res) => {
+    const { text } = req.body;
+    if (!text) {
+        return res.status(400).json({ error: 'Invalid text input' });
+    }
+    try {
+        const processedText = await processTextContent(text);
+        res.json({ processedText });
+    } catch (error) {
+        res.status(500).json({ error: 'Error processing text content' });
+    }
+});
+
+app.post('/automated-content', async (req, res) => {
+    const { prompt } = req.body;
+    if (!prompt) {
+        return res.status(400).json({ error: 'Invalid prompt input' });
+    }
+    try {
+        const generatedContent = await generateTextContent(prompt);
+        res.json({ generatedContent });
+    } catch (error) {
+        res.status(500).json({ error: 'Error generating automated content' });
+    }
+});
+
+app.post('/content-quality', (req, res) => {
+    const { content } = req.body;
+    if (!content) {
+        return res.status(400).json({ error: 'Invalid content input' });
+    }
+    // Placeholder logic for content quality assessment
+    const qualityScore = Math.random() * 10; // Simulate a quality score
+    res.json({ qualityScore });
 });
 
 // Recommendation Engine route
@@ -228,16 +259,6 @@ app.post('/recommendation', (req, res) => {
     }
     const recommendations = generateRecommendations(userData);
     res.json(recommendations);
-});
-
-// Automated Content Generation route
-app.post('/automated-content', (req, res) => {
-    res.json({ message: 'Automated Content Generation route placeholder' });
-});
-
-// Content Quality Assessment route
-app.post('/content-quality', (req, res) => {
-    res.json({ message: 'Content Quality Assessment route placeholder' });
 });
 
 // Start the server

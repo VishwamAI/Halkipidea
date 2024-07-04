@@ -57,6 +57,45 @@ app.post('/generate-text', async (req, res) => {
     }
 });
 
+app.post('/ingest-external-data', async (req, res) => {
+    const { sourceUrl } = req.body;
+    if (!sourceUrl) {
+        return res.status(400).json({ error: 'Invalid source URL' });
+    }
+    try {
+        const data = await ingestExternalData(sourceUrl);
+        res.json(data);
+    } catch (error) {
+        res.status(500).json({ error: 'Error ingesting external data' });
+    }
+});
+
+app.post('/integrate-data-kg', async (req, res) => {
+    const { data } = req.body;
+    if (!data) {
+        return res.status(400).json({ error: 'Invalid data input' });
+    }
+    try {
+        await integrateDataIntoKG(data);
+        res.json({ message: 'Data integrated into knowledge graph successfully' });
+    } catch (error) {
+        res.status(500).json({ error: 'Error integrating data into knowledge graph' });
+    }
+});
+
+app.post('/query-kg', async (req, res) => {
+    const { query } = req.body;
+    if (!query) {
+        return res.status(400).json({ error: 'Invalid query input' });
+    }
+    try {
+        const result = await queryKnowledgeGraph(query);
+        res.json(result);
+    } catch (error) {
+        res.status(500).json({ error: 'Error querying knowledge graph' });
+    }
+});
+
 // Machine Learning Models route
 app.post('/ml', (req, res) => {
     const { inputData } = req.body;

@@ -8,6 +8,7 @@ const { mlModel, cvModel, kgModel } = require('./ML_Models/models');
 const { processCMSData } = require('./cmsHandler');
 const { generateRecommendations } = require('./Recommendation_Engine/recommendationEngine');
 const { processUserInteractionData } = require('./User_Interaction/userInteractionHandler');
+const { processTextContent, generateTextContent } = require('./Natural_Language_Processing/nlpHandler');
 const app = express();
 const port = 3000;
 
@@ -28,6 +29,32 @@ app.post('/nlp', (req, res) => {
     const { text } = req.body;
     const result = processText(text);
     res.json(result);
+});
+
+app.post('/process-text', async (req, res) => {
+    const { text } = req.body;
+    if (!text) {
+        return res.status(400).json({ error: 'Invalid text input' });
+    }
+    try {
+        const result = await processTextContent(text);
+        res.json(result);
+    } catch (error) {
+        res.status(500).json({ error: 'Error processing text content' });
+    }
+});
+
+app.post('/generate-text', async (req, res) => {
+    const { prompt } = req.body;
+    if (!prompt) {
+        return res.status(400).json({ error: 'Invalid prompt input' });
+    }
+    try {
+        const generatedText = await generateTextContent(prompt);
+        res.json({ generatedText });
+    } catch (error) {
+        res.status(500).json({ error: 'Error generating text content' });
+    }
 });
 
 // Machine Learning Models route

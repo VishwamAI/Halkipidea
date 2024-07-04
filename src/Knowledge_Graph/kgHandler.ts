@@ -47,3 +47,7 @@ export async function queryKnowledgeGraph(query: string): Promise<any> {
         throw error;
     }
 }
+
+// TODO: Replace the placeholder knowledge graph object with an actual database or data structure that can persist data across function calls and sessions.
+// TODO: Implement the logic for processing and integrating data into the knowledge graph, which may involve transforming the data and establishing relationships between entities.
+// TODO: Develop the querying logic to effectively retrieve relevant information from the knowledge graph based on the input query.

@@ -6,6 +6,11 @@ const generateRecommendations = (userData) => {
     // Example structure: { preferences: [], pastInteractions: [], ... }
     const { preferences, pastInteractions } = userData;
 
+    // Validate userData structure
+    if (!Array.isArray(preferences) || !Array.isArray(pastInteractions)) {
+        throw new Error('Invalid user data structure');
+    }
+
     // Example logic for generating recommendations based on user data
     // This is a placeholder and should be replaced with actual recommendation logic
     const recommendations = [

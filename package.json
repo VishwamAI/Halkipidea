@@ -4,12 +4,15 @@
   "description": "Halkipedia is a cutting-edge, AI-enhanced knowledge platform that reimagines the traditional wiki experience. It combines the collaborative nature of wikis with advanced artificial intelligence to create a dynamic, personalized, and immersive learning environment.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "@tensorflow/tfjs": "^4.20.0"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0"
   }
 }

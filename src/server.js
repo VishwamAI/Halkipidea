@@ -29,6 +29,9 @@ app.post('/nlp', (req, res) => {
 // Machine Learning Models route
 app.post('/ml', (req, res) => {
     const { inputData } = req.body;
+    if (!inputData) {
+        return res.status(400).json({ error: 'Invalid input data' });
+    }
     const model = mlModel();
     // Placeholder logic for using the ML model
     const result = model.predict(inputData);
@@ -38,6 +41,9 @@ app.post('/ml', (req, res) => {
 // Computer Vision route
 app.post('/cv', (req, res) => {
     const { inputData } = req.body;
+    if (!inputData) {
+        return res.status(400).json({ error: 'Invalid input data' });
+    }
     const model = cvModel();
     // Placeholder logic for using the CV model
     const result = model.predict(inputData);
@@ -47,6 +53,9 @@ app.post('/cv', (req, res) => {
 // Knowledge Graph route
 app.post('/kg', (req, res) => {
     const { inputData } = req.body;
+    if (!inputData) {
+        return res.status(400).json({ error: 'Invalid input data' });
+    }
     const model = kgModel();
     // Placeholder logic for using the KG model
     const result = model.predict(inputData);

@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const tf = require('@tensorflow/tfjs-node');
 const { orchestrateAIModels } = require('./AI_Orchestrator/orchestrator');
 const { processText } = require('./Natural_Language_Processing/nlp');
 const { mlModel, cvModel, kgModel } = require('./ML_Models/models');
@@ -33,9 +34,13 @@ app.post('/ml', (req, res) => {
         return res.status(400).json({ error: 'Invalid input data' });
     }
     const model = mlModel();
-    // Placeholder logic for using the ML model
-    const result = model.predict(inputData);
-    res.json(result);
+    try {
+        const tensorInput = tf.tensor(inputData);
+        const result = model.predict(tensorInput);
+        res.json(result);
+    } catch (error) {
+        res.status(500).json({ error: 'Error processing ML model prediction' });
+    }
 });
 
 // Computer Vision route
@@ -45,9 +50,13 @@ app.post('/cv', (req, res) => {
         return res.status(400).json({ error: 'Invalid input data' });
     }
     const model = cvModel();
-    // Placeholder logic for using the CV model
-    const result = model.predict(inputData);
-    res.json(result);
+    try {
+        const tensorInput = tf.tensor(inputData);
+        const result = model.predict(tensorInput);
+        res.json(result);
+    } catch (error) {
+        res.status(500).json({ error: 'Error processing CV model prediction' });
+    }
 });
 
 // Knowledge Graph route
@@ -57,9 +66,13 @@ app.post('/kg', (req, res) => {
         return res.status(400).json({ error: 'Invalid input data' });
     }
     const model = kgModel();
-    // Placeholder logic for using the KG model
-    const result = model.predict(inputData);
-    res.json(result);
+    try {
+        const tensorInput = tf.tensor(inputData);
+        const result = model.predict(tensorInput);
+        res.json(result);
+    } catch (error) {
+        res.status(500).json({ error: 'Error processing KG model prediction' });
+    }
 });
 
 // Start the server

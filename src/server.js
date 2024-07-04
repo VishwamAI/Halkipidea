@@ -75,6 +75,17 @@ app.post('/kg', (req, res) => {
     }
 });
 
+// Content Management System route
+app.post('/cms', (req, res) => {
+    const { contentData } = req.body;
+    if (!contentData) {
+        return res.status(400).json({ error: 'Invalid content data' });
+    }
+    // Placeholder logic for processing CMS data
+    const result = { message: 'CMS data processed successfully' };
+    res.json(result);
+});
+
 // Start the server
 app.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`);

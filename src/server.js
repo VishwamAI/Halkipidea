@@ -10,7 +10,7 @@ const { generateRecommendations } = require('./Recommendation_Engine/recommendat
 const { processUserInteractionData } = require('./User_Interaction/userInteractionHandler');
 // const { processTextContent, generateTextContent } = require('./Natural_Language_Processing/nlpHandler');
 const { processImageContent, processVideoContent } = require('./vision_service');
-const { answerQuestion } = require('./Natural_Language_Processing/nlpHandler');
+const { answerQuestion, generateTextContent } = require('./Natural_Language_Processing/nlpHandler');
 const app = express();
 const port = 3000;
 
@@ -59,8 +59,8 @@ app.post('/generate-text', async (req, res) => {
         return res.status(400).json({ error: 'Invalid prompt input' });
     }
     try {
-        // const generatedText = await generateTextContent(prompt);
-        // res.json({ generatedText });
+        const generatedText = await generateTextContent(prompt);
+        res.json({ generatedText });
     } catch (error) {
         res.status(500).json({ error: 'Error generating text content' });
     }

@@ -7,6 +7,7 @@ const { processText } = require('./Natural_Language_Processing/nlp');
 const { mlModel, cvModel, kgModel } = require('./ML_Models/models');
 const { processCMSData } = require('./cmsHandler');
 const { generateRecommendations } = require('./Recommendation_Engine/recommendationEngine');
+const { processUserInteractionData } = require('./User_Interaction/userInteractionHandler');
 const app = express();
 const port = 3000;
 
@@ -95,13 +96,12 @@ app.post('/user-interaction', (req, res) => {
     if (!interactionData) {
         return res.status(400).json({ error: 'Invalid interaction data' });
     }
-    // Placeholder logic for processing user interaction data
-    const processedData = {
-        message: 'User interaction data processed successfully',
-        interactionData: interactionData,
-        timestamp: new Date().toISOString()
-    };
-    res.json(processedData);
+    try {
+        const processedData = processUserInteractionData(interactionData);
+        res.json(processedData);
+    } catch (error) {
+        res.status(500).json({ error: 'Error processing user interaction data' });
+    }
 });
 
 // External Data Sources route

@@ -105,8 +105,18 @@ app.post('/user-interaction', (req, res) => {
 });
 
 // External Data Sources route
-app.post('/external-data', (req, res) => {
-    res.json({ message: 'External Data Sources route placeholder' });
+app.post('/external-data', async (req, res) => {
+    const { sourceUrl } = req.body;
+    if (!sourceUrl) {
+        return res.status(400).json({ error: 'Invalid source URL' });
+    }
+    try {
+        const response = await fetch(sourceUrl);
+        const data = await response.json();
+        res.json(data);
+    } catch (error) {
+        res.status(500).json({ error: 'Error fetching external data' });
+    }
 });
 
 // Image/Video Content route

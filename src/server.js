@@ -5,6 +5,7 @@ const tf = require('@tensorflow/tfjs-node');
 const { orchestrateAIModels } = require('./AI_Orchestrator/orchestrator');
 const { processText } = require('./Natural_Language_Processing/nlp');
 const { mlModel, cvModel, kgModel } = require('./ML_Models/models');
+const { processCMSData } = require('./cmsHandler');
 const app = express();
 const port = 3000;
 
@@ -81,8 +82,7 @@ app.post('/cms', (req, res) => {
     if (!contentData) {
         return res.status(400).json({ error: 'Invalid content data' });
     }
-    // Placeholder logic for processing CMS data
-    const result = { message: 'CMS data processed successfully' };
+    const result = processCMSData(contentData);
     res.json(result);
 });
 

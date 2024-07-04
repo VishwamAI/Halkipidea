@@ -6,8 +6,8 @@ export async function processImageContent(imageBuffer: Buffer): Promise<tf.Tenso
     const imageTensor = tf.node.decodeImage(imageBuffer);
     const processedImage = imageTensor.div(tf.scalar(255.0));
 
-    // Placeholder for image recognition model
-    const model = await tf.loadLayersModel('file://path/to/image-model.json');
+    // Load the MobileNet model for image recognition
+    const model = await tf.loadLayersModel('https://cdn.jsdelivr.net/npm/@tensorflow-models/mobilenet@1.0.0');
     const predictions = model.predict(processedImage.expandDims(0)) as tf.Tensor;
 
     return predictions;

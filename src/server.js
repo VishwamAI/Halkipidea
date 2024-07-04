@@ -90,7 +90,17 @@ app.post('/cms', (req, res) => {
 
 // User Interaction Data route
 app.post('/user-interaction', (req, res) => {
-    res.json({ message: 'User Interaction Data route placeholder' });
+    const { interactionData } = req.body;
+    if (!interactionData) {
+        return res.status(400).json({ error: 'Invalid interaction data' });
+    }
+    // Placeholder logic for processing user interaction data
+    const processedData = {
+        message: 'User interaction data processed successfully',
+        interactionData: interactionData,
+        timestamp: new Date().toISOString()
+    };
+    res.json(processedData);
 });
 
 // External Data Sources route

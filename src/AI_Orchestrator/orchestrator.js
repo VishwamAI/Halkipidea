@@ -7,12 +7,17 @@ const orchestrateAIModels = async (req, res) => {
     const { inputData } = req.body;
 
     // Process text using NLP model
-    const nlpResult = processText(inputData.text);
+    let nlpResult;
+    try {
+        nlpResult = await processText(inputData.text);
+    } catch (error) {
+        return res.status(500).json({ error: 'Error processing NLP model prediction' });
+    }
 
     // Process data using ML model
-    const mlModelInstance = mlModel();
     let mlResult;
     try {
+        const mlModelInstance = await mlModel();
         const tensorInput = tf.tensor(inputData.mlData);
         mlResult = mlModelInstance.predict(tensorInput);
     } catch (error) {
@@ -20,9 +25,9 @@ const orchestrateAIModels = async (req, res) => {
     }
 
     // Process data using CV model
-    const cvModelInstance = cvModel();
     let cvResult;
     try {
+        const cvModelInstance = await cvModel();
         const tensorInput = tf.tensor(inputData.cvData);
         cvResult = cvModelInstance.predict(tensorInput);
     } catch (error) {
@@ -30,9 +35,9 @@ const orchestrateAIModels = async (req, res) => {
     }
 
     // Process data using KG model
-    const kgModelInstance = kgModel();
     let kgResult;
     try {
+        const kgModelInstance = await kgModel();
         const tensorInput = tf.tensor(inputData.kgData);
         kgResult = kgModelInstance.predict(tensorInput);
     } catch (error) {

@@ -17,18 +17,21 @@ const NaturalLanguageProcessing = () => {
     };
 
     return (
-        <div>
-            <h2>Natural Language Processing</h2>
-            <form onSubmit={handleSubmit}>
+        <div className="p-4 bg-white rounded shadow-md">
+            <h2 className="text-2xl font-bold mb-4">Natural Language Processing</h2>
+            <form onSubmit={handleSubmit} className="space-y-4">
                 <textarea
                     value={text}
                     onChange={(e) => setText(e.target.value)}
                     placeholder="Enter text for NLP"
+                    className="w-full p-2 border border-gray-300 rounded"
                 />
-                <button type="submit">Process Text</button>
+                <button type="submit" className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
+                    Process Text
+                </button>
             </form>
-            {error && <div>Error: {error}</div>}
-            {nlpData && <pre>{JSON.stringify(nlpData, null, 2)}</pre>}
+            {error && <div className="mt-4 text-red-500">Error: {error}</div>}
+            {nlpData && <pre className="mt-4 p-2 bg-gray-100 rounded">{JSON.stringify(nlpData, null, 2)}</pre>}
         </div>
     );
 };

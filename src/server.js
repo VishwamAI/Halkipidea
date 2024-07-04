@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const { orchestrateAIModels } = require('./AI_Orchestrator/orchestrator');
 const { processText } = require('./Natural_Language_Processing/nlp');
+const { mlModel, cvModel, kgModel } = require('./ML_Models/models');
 const app = express();
 const port = 3000;
 
@@ -25,22 +26,31 @@ app.post('/nlp', (req, res) => {
     res.json(result);
 });
 
-// Placeholder for Machine Learning Models route
+// Machine Learning Models route
 app.post('/ml', (req, res) => {
-    // Logic for ML models will go here
-    res.send('ML models endpoint');
+    const { inputData } = req.body;
+    const model = mlModel();
+    // Placeholder logic for using the ML model
+    const result = model.predict(inputData);
+    res.json(result);
 });
 
-// Placeholder for Computer Vision route
+// Computer Vision route
 app.post('/cv', (req, res) => {
-    // Logic for CV model will go here
-    res.send('CV model endpoint');
+    const { inputData } = req.body;
+    const model = cvModel();
+    // Placeholder logic for using the CV model
+    const result = model.predict(inputData);
+    res.json(result);
 });
 
-// Placeholder for Knowledge Graph route
+// Knowledge Graph route
 app.post('/kg', (req, res) => {
-    // Logic for KG model will go here
-    res.send('KG model endpoint');
+    const { inputData } = req.body;
+    const model = kgModel();
+    // Placeholder logic for using the KG model
+    const result = model.predict(inputData);
+    res.json(result);
 });
 
 // Start the server

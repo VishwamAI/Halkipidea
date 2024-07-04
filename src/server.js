@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const { orchestrateAIModels } = require('./AI_Orchestrator/orchestrator');
 const app = express();
 const port = 3000;
 
@@ -13,11 +14,8 @@ app.get('/', (req, res) => {
     res.send('Welcome to Halkipedia AI System');
 });
 
-// Placeholder for AI Orchestrator route
-app.post('/orchestrate', (req, res) => {
-    // Logic for orchestrating AI models will go here
-    res.send('AI Orchestrator endpoint');
-});
+// AI Orchestrator route
+app.post('/orchestrate', orchestrateAIModels);
 
 // Placeholder for Natural Language Processing route
 app.post('/nlp', (req, res) => {

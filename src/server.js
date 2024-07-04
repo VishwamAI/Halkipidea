@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const { orchestrateAIModels } = require('./AI_Orchestrator/orchestrator');
+const { processText } = require('./Natural_Language_Processing/nlp');
 const app = express();
 const port = 3000;
 
@@ -17,10 +18,11 @@ app.get('/', (req, res) => {
 // AI Orchestrator route
 app.post('/orchestrate', orchestrateAIModels);
 
-// Placeholder for Natural Language Processing route
+// Natural Language Processing route
 app.post('/nlp', (req, res) => {
-    // Logic for NLP model will go here
-    res.send('NLP model endpoint');
+    const { text } = req.body;
+    const result = processText(text);
+    res.json(result);
 });
 
 // Placeholder for Machine Learning Models route

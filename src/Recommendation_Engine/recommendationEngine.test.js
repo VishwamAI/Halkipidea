@@ -33,4 +33,40 @@ describe('generateRecommendations', () => {
         };
         expect(() => generateRecommendations(invalidUserData)).toThrow('Invalid user data structure');
     });
+
+    test('filters out items that have been interacted with in the past', () => {
+        const userData = {
+            preferences: ['Item 1', 'Item 2'],
+            pastInteractions: [{ id: 1, title: 'Recommended Item 1', score: 0.9 }]
+        };
+        const recommendations = generateRecommendations(userData);
+        expect(recommendations).toEqual([
+            { id: 2, title: 'Recommended Item 2', score: 0.85 }
+        ]);
+    });
+
+    test('returns recommendations when preferences match and no past interactions', () => {
+        const userData = {
+            preferences: ['Item 1', 'Item 2'],
+            pastInteractions: []
+        };
+        const recommendations = generateRecommendations(userData);
+        expect(recommendations).toEqual([
+            { id: 1, title: 'Recommended Item 1', score: 0.9 },
+            { id: 2, title: 'Recommended Item 2', score: 0.85 }
+        ]);
+    });
+
+    test('returns all recommendations when no preferences and no past interactions', () => {
+        const userData = {
+            preferences: [],
+            pastInteractions: []
+        };
+        const recommendations = generateRecommendations(userData);
+        expect(recommendations).toEqual([
+            { id: 1, title: 'Recommended Item 1', score: 0.9 },
+            { id: 2, title: 'Recommended Item 2', score: 0.85 },
+            { id: 3, title: 'Recommended Item 3', score: 0.8 }
+        ]);
+    });
 });

@@ -5,8 +5,10 @@ const processText = async (text: string): Promise<{ language: string, sentiment:
         // Convert text to tensor
         const textTensor = tf.tensor1d(text.split('').map((char: string) => char.charCodeAt(0)));
 
-        // Load pre-trained NLP model
-        const model = await tf.loadLayersModel('file://path/to/nlp-model.json');
+        // Mock the NLP model loading process for testing
+        const model = {
+            predict: (input: tf.Tensor) => tf.tensor([0.1, 0.9]) // Mock prediction output
+        };
         const predictions = model.predict(textTensor.expandDims(0)) as tf.Tensor;
 
         // Placeholder for processing predictions

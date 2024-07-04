@@ -10,22 +10,22 @@ const AIOrchestrator = () => {
 
     useEffect(() => {
         // Fetch data from the NLP route
-        axios.get('/api/nlp')
+        axios.post('/api/nlp', { text: 'Sample text for NLP' })
             .then(response => setNlpData(response.data))
             .catch(error => setError(error.message));
 
         // Fetch data from the ML route
-        axios.get('/api/ml')
+        axios.post('/api/ml', { inputData: [1, 2, 3, 4] })
             .then(response => setMlData(response.data))
             .catch(error => setError(error.message));
 
         // Fetch data from the CV route
-        axios.get('/api/cv')
+        axios.post('/api/cv', { inputData: [5, 6, 7, 8] })
             .then(response => setCvData(response.data))
             .catch(error => setError(error.message));
 
         // Fetch data from the KG route
-        axios.get('/api/kg')
+        axios.post('/api/kg', { inputData: [9, 10, 11, 12] })
             .then(response => setKgData(response.data))
             .catch(error => setError(error.message));
     }, []);

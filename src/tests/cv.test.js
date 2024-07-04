@@ -1,8 +1,14 @@
 const request = require('supertest');
 const express = require('express');
 const bodyParser = require('body-parser');
-const { cvModel } = require('../ML_Models/models');
 const tf = require('@tensorflow/tfjs-node');
+
+jest.mock('@tensorflow/tfjs-node', () => ({
+    ...jest.requireActual('@tensorflow/tfjs-node'),
+    loadLayersModel: jest.fn().mockImplementation(() => ({
+        predict: jest.fn().mockReturnValue(tf.tensor([0.1, 0.9]))
+    }))
+}));
 
 const app = express();
 app.use(bodyParser.json());
@@ -12,7 +18,7 @@ app.post('/cv', (req, res) => {
     if (!inputData) {
         return res.status(400).json({ error: 'Invalid input data' });
     }
-    const model = cvModel();
+    const model = tf.loadLayersModel();
     try {
         const tensorInput = tf.tensor(inputData);
         const result = model.predict(tensorInput);

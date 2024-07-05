@@ -5,6 +5,10 @@ const bodyParser = require('body-parser');
 const app = express();
 app.use(bodyParser.json());
 
+jest.spyOn(module.exports, 'assessContentQuality').mockImplementation(() => {
+    throw new Error('Error assessing content quality');
+});
+
 app.post('/content-quality', async (req, res) => {
     const { content } = req.body;
     if (!content) {
@@ -84,9 +88,6 @@ describe('POST /content-quality', () => {
 
     it('should return 500 if there is an error during content quality assessment', async () => {
         const content = 'Sample content for quality assessment';
-        jest.spyOn(module.exports, 'assessContentQuality').mockImplementation(() => {
-            throw new Error('Error assessing content quality');
-        });
         const response = await request(app)
             .post('/content-quality')
             .send({ content });

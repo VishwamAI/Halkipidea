@@ -14,6 +14,7 @@ export async function processImageContent(imageBuffer: Buffer): Promise<tf.Tenso
         return predictions;
     } catch (error) {
         console.error('Error processing image content:', error);
+        console.error('Image buffer:', imageBuffer);
         throw new Error('Failed to process image content');
     }
 }

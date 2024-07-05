@@ -1,4 +1,4 @@
-const { processText } = require('../Natural_Language_Processing/nlp');
+const { processTextContent, generateTextContent, answerQuestion } = require('../Natural_Language_Processing/nlpHandler');
 const { mlModel, cvModel, kgModel } = require('../ML_Models/models');
 const tf = require('@tensorflow/tfjs-node');
 
@@ -17,7 +17,7 @@ const orchestrateAIModels = async (req, res) => {
         if (!inputData.text || typeof inputData.text !== 'string') {
             throw new Error('Invalid text data');
         }
-        nlpResult = await processText(inputData.text);
+        nlpResult = await processTextContent(inputData.text);
     } catch (error) {
         return res.status(500).json({ error: 'Error processing NLP model prediction' });
     }

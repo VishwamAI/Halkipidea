@@ -1,5 +1,10 @@
 import { answerQuestion } from './nlpHandler';
 
+// Polyfill fetch function for Node.js environment
+if (!globalThis.fetch) {
+    globalThis.fetch = require('node-fetch');
+}
+
 describe('NLP Handler', () => {
     it('should return answers based on a passage of text', async () => {
         const question = 'What is the capital of France?';

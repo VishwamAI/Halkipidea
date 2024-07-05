@@ -2,15 +2,20 @@ import * as tf from '@tensorflow/tfjs-node';
 
 // Function to process image content
 export async function processImageContent(imageBuffer: Buffer): Promise<tf.Tensor> {
-    // Decode the image buffer to a tensor
-    const imageTensor = tf.node.decodeImage(imageBuffer);
-    const processedImage = imageTensor.div(tf.scalar(255.0));
+    try {
+        // Decode the image buffer to a tensor
+        const imageTensor = tf.node.decodeImage(imageBuffer);
+        const processedImage = imageTensor.div(tf.scalar(255.0));
 
-    // Load the pre-trained MobileNet model
-    const model = await tf.loadLayersModel('https://github.com/VishwamAI/Halkipidea/releases/download/v1.0.0/model.json');
-    const predictions = model.predict(processedImage.expandDims(0)) as tf.Tensor;
+        // Load the pre-trained MobileNet model
+        const model = await tf.loadLayersModel('file://./src/Computer_Vision/model.json');
+        const predictions = model.predict(processedImage.expandDims(0)) as tf.Tensor;
 
-    return predictions;
+        return predictions;
+    } catch (error) {
+        console.error('Error processing image content:', error);
+        throw new Error('Failed to process image content');
+    }
 }
 
 // Function to process video content

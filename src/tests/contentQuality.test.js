@@ -18,9 +18,48 @@ app.post('/content-quality', async (req, res) => {
     }
 });
 
+// Function to assess the overall quality of the content
 async function assessContentQuality(content) {
-    // Placeholder logic for content quality assessment
-    return 85; // Static quality score
+    const readabilityScore = calculateReadability(content);
+    const accuracyScore = calculateAccuracy(content);
+    const relevanceScore = calculateRelevance(content);
+    const qualityScore = (readabilityScore + accuracyScore + relevanceScore) / 3;
+    return qualityScore;
+}
+
+// Function to calculate the readability score of the content
+function calculateReadability(content) {
+    const words = content.split(/\s+/).length;
+    const sentences = content.split(/[.!?]/).length;
+    const syllables = content.split(/[aeiouy]+/).length - 1;
+    const readabilityScore = 206.835 - (1.015 * (words / sentences)) - (84.6 * (syllables / words));
+    return readabilityScore;
+}
+
+// Function to calculate the accuracy score of the content
+function calculateAccuracy(content) {
+    const factualKeywords = ['fact', 'data', 'evidence', 'research', 'study'];
+    let accuracyScore = 0;
+    factualKeywords.forEach(keyword => {
+        if (content.includes(keyword)) {
+            accuracyScore += 20;
+        }
+    });
+    accuracyScore = Math.min(accuracyScore, 100);
+    return accuracyScore;
+}
+
+// Function to calculate the relevance score of the content
+function calculateRelevance(content) {
+    const relevantKeywords = ['Halkipedia', 'AI', 'knowledge', 'content', 'quality'];
+    let relevanceScore = 0;
+    relevantKeywords.forEach(keyword => {
+        if (content.includes(keyword)) {
+            relevanceScore += 20;
+        }
+    });
+    relevanceScore = Math.min(relevanceScore, 100);
+    return relevanceScore;
 }
 
 describe('POST /content-quality', () => {
@@ -38,12 +77,12 @@ describe('POST /content-quality', () => {
             .post('/content-quality')
             .send({ content });
         expect(response.status).toBe(200);
-        expect(response.body).toEqual({ qualityScore: 85 });
+        expect(response.body).toEqual({ qualityScore: (calculateReadability(content) + calculateAccuracy(content) + calculateRelevance(content)) / 3 });
     });
 
     it('should return 500 if there is an error during content quality assessment', async () => {
         const content = 'Sample content for quality assessment';
-        jest.spyOn(global, 'assessContentQuality').mockImplementation(() => {
+        jest.spyOn(module.exports, 'assessContentQuality').mockImplementation(() => {
             throw new Error('Error assessing content quality');
         });
         const response = await request(app)
@@ -51,5 +90,25 @@ describe('POST /content-quality', () => {
             .send({ content });
         expect(response.status).toBe(500);
         expect(response.body.error).toBe('Error assessing content quality');
+    });
+});
+
+describe('Content Quality Functions', () => {
+    it('should calculate readability score correctly', () => {
+        const content = 'This is a simple sentence.';
+        const score = calculateReadability(content);
+        expect(score).toBeCloseTo(68.94, 2);
+    });
+
+    it('should calculate accuracy score correctly', () => {
+        const content = 'This content contains fact and data.';
+        const score = calculateAccuracy(content);
+        expect(score).toBe(40);
+    });
+
+    it('should calculate relevance score correctly', () => {
+        const content = 'Halkipedia is an AI knowledge content platform that ensures quality.';
+        const score = calculateRelevance(content);
+        expect(score).toBe(100);
     });
 });

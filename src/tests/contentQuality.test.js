@@ -5,11 +5,17 @@ const bodyParser = require('body-parser');
 const app = express();
 app.use(bodyParser.json());
 
-jest.mock('../contentQualityAssessor', () => ({
-    assessContentQuality: jest.fn(() => {
-        throw new Error('Error assessing content quality');
-    })
-}));
+async function assessContentQuality(content) {
+    const readabilityScore = calculateReadability(content);
+    const accuracyScore = calculateAccuracy(content);
+    const relevanceScore = calculateRelevance(content);
+    const qualityScore = (readabilityScore + accuracyScore + relevanceScore) / 3;
+    return qualityScore;
+}
+
+jest.spyOn(module.exports, 'assessContentQuality').mockImplementation(() => {
+    throw new Error('Error assessing content quality');
+});
 
 app.post('/content-quality', async (req, res) => {
     const { content } = req.body;
@@ -23,15 +29,6 @@ app.post('/content-quality', async (req, res) => {
         res.status(500).json({ error: 'Error assessing content quality' });
     }
 });
-
-// Function to assess the overall quality of the content
-async function assessContentQuality(content) {
-    const readabilityScore = calculateReadability(content);
-    const accuracyScore = calculateAccuracy(content);
-    const relevanceScore = calculateRelevance(content);
-    const qualityScore = (readabilityScore + accuracyScore + relevanceScore) / 3;
-    return qualityScore;
-}
 
 // Function to calculate the readability score of the content
 function calculateReadability(content) {

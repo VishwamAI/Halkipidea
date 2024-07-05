@@ -26,6 +26,7 @@
   "devDependencies": {
     "@babel/preset-env": "^7.24.7",
     "@babel/preset-react": "^7.24.7",
+    "@babel/preset-typescript": "^7.24.7",
     "@types/jest": "^29.5.12",
     "express": "^4.19.2",
     "identity-obj-proxy": "^3.0.0",
@@ -35,12 +36,13 @@
     "ts-jest": "^29.1.5"
   },
   "jest": {
+    "setupFilesAfterEnv": ["<rootDir>/jest.setup.js"],
     "transform": {
       "^.+\\.jsx?$": "babel-jest",
       "^.+\\.tsx?$": "ts-jest"
     },
     "transformIgnorePatterns": [
-      "/node_modules/"
+      "/node_modules/(?!node-fetch|data-uri-to-buffer)"
     ],
     "testEnvironment": "jsdom",
     "moduleNameMapper": {

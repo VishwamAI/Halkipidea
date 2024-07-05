@@ -8,6 +8,17 @@ if (!globalThis.fetch) {
     globalThis.fetch = require('node-fetch');
 }
 
+// Mock TensorFlow.js functions
+jest.mock('@tensorflow/tfjs-node', () => {
+    const actualTf = jest.requireActual('@tensorflow/tfjs-node');
+    return {
+        ...actualTf,
+        loadLayersModel: jest.fn().mockImplementation(() => ({
+            predict: jest.fn().mockReturnValue(tf.tensor([0.1, 0.9]))
+        }))
+    };
+});
+
 describe('processImageContent', () => {
     it('should process an image buffer and return predictions', async () => {
         // Load a sample image buffer for testing

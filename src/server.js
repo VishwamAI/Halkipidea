@@ -10,6 +10,7 @@ const { generateRecommendations } = require('./Recommendation_Engine/recommendat
 const { processUserInteractionData } = require('./User_Interaction/userInteractionHandler');
 // const { processTextContent, generateTextContent } = require('./Natural_Language_Processing/nlpHandler');
 const { processImageContent, processVideoContent } = require('./dist/Computer_Vision/vision_service');
+
 const { answerQuestion, generateTextContent } = require('./Natural_Language_Processing/nlpHandler');
 const app = express();
 const port = 3000;

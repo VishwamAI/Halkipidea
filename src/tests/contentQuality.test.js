@@ -82,7 +82,7 @@ describe('POST /content-quality', () => {
     });
 
     it('should return 500 if there is an error during content quality assessment', async () => {
-        jest.spyOn(module.exports, 'assessContentQuality').mockImplementation(() => {
+        jest.spyOn(module.exports, 'assessContentQuality').mockImplementation(async () => {
             throw new Error('Error assessing content quality');
         });
         const content = 'Sample content for quality assessment';

@@ -77,7 +77,7 @@ describe('POST /content-quality', () => {
     });
 
     it('should return 500 if there is an error during content quality assessment', async () => {
-        jest.spyOn(require('../contentQualityAssessor'), 'assessContentQuality').mockImplementation(async () => {
+        const mockAssessContentQuality = jest.spyOn(require('../contentQualityAssessor'), 'assessContentQuality').mockImplementation(async () => {
             throw new Error('Error assessing content quality');
         });
         const content = 'Sample content for quality assessment';
@@ -86,6 +86,7 @@ describe('POST /content-quality', () => {
             .send({ content });
         expect(response.status).toBe(500);
         expect(response.body.error).toBe('Error assessing content quality');
+        mockAssessContentQuality.mockRestore();
     });
 });
 

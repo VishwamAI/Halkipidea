@@ -42,7 +42,7 @@ const cvModel = async () => {
 const kgModel = async () => {
     try {
         // Load pre-trained KG model
-        const model = await tf.loadLayersModel('file://./src/Knowledge_Graph/models/model.json');
+        const model = await tf.loadLayersModel('file://./src/Knowledge_Graph/models/mock_kg_model.json');
         return model;
     } catch (error) {
         console.error('Error loading KG model:', error);

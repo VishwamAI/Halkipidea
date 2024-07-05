@@ -7,7 +7,7 @@ export async function processTextContent(text: string): Promise<tf.Tensor> {
     const textTensor = tf.tensor1d(text.split('').map(char => char.charCodeAt(0)));
 
     // Load pre-trained NLP model
-    const model = await tf.loadLayersModel('https://cdn.jsdelivr.net/npm/@tensorflow-models/qna');
+    const model = await tf.loadLayersModel('file://./src/NLP/models/model.json');
     const predictions = model.predict(textTensor.expandDims(0)) as tf.Tensor;
 
     return predictions;
@@ -19,7 +19,7 @@ export async function generateTextContent(prompt: string): Promise<string> {
     const promptTensor = tf.tensor1d(prompt.split('').map(char => char.charCodeAt(0)));
 
     // Load pre-trained text generation model
-    const model = await tf.loadLayersModel('https://github.com/VishwamAI/Halkipidea/releases/download/v1.0.0/model.json');
+    const model = await tf.loadLayersModel('file://./src/NLP/models/model.json');
     const generatedTensor = model.predict(promptTensor.expandDims(0)) as tf.Tensor;
 
     // Convert tensor back to string

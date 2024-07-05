@@ -23,7 +23,7 @@ export async function generateTextContent(prompt: string): Promise<string> {
     const generatedTensor = model.predict(promptTensor.expandDims(0)) as tf.Tensor;
 
     // Convert tensor back to string
-    const generatedText = String.fromCharCode(...generatedTensor.dataSync());
+    const generatedText = String.fromCharCode(...(await generatedTensor.data()));
 
     return generatedText;
 }
@@ -31,7 +31,9 @@ export async function generateTextContent(prompt: string): Promise<string> {
 // Function to answer questions based on a passage of text
 export async function answerQuestion(question: string, passage: string): Promise<any> {
     // Load the QnA model
-    const model = await qna.load();
+    const model = await qna.load({
+        modelUrl: 'file://./src/NLP/models/qna/model.json'
+    });
 
     // Find the answers
     const answers = await model.findAnswers(question, passage);

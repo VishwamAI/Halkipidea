@@ -46,7 +46,7 @@ if (!globalThis.fetch) {
 describe('processImageContent', () => {
     it('should process an image buffer and return predictions', () => __awaiter(void 0, void 0, void 0, function* () {
         // Load a sample image buffer for testing
-        const imagePath = path_1.default.resolve(__dirname, 'test_image.png');
+        const imagePath = path_1.default.resolve(__dirname, '../../src/Computer_Vision/test_image.png');
         const imageBuffer = fs_1.default.readFileSync(imagePath);
         // Call the processImageContent function
         const predictions = yield (0, vision_service_1.processImageContent)(imageBuffer);

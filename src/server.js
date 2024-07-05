@@ -31,18 +31,45 @@ async function assessContentQuality(content) {
 }
 
 function calculateReadability(content) {
-    // Placeholder logic for readability analysis
-    return 80; // Example readability score
+    const words = content.split(/\s+/).length;
+    const sentences = content.split(/[.!?]/).length;
+    const syllables = content.split(/[aeiouy]+/).length - 1;
+
+    // Flesch-Kincaid readability formula
+    const readabilityScore = 206.835 - (1.015 * (words / sentences)) - (84.6 * (syllables / words));
+    return readabilityScore;
 }
 
 function calculateAccuracy(content) {
-    // Placeholder logic for accuracy analysis
-    return 90; // Example accuracy score
+    const factualKeywords = ['fact', 'data', 'evidence', 'research', 'study'];
+    let accuracyScore = 0;
+
+    factualKeywords.forEach(keyword => {
+        if (content.includes(keyword)) {
+            accuracyScore += 20; // Increase score for each keyword found
+        }
+    });
+
+    // Ensure the score is within the range of 0 to 100
+    accuracyScore = Math.min(accuracyScore, 100);
+
+    return accuracyScore;
 }
 
 function calculateRelevance(content) {
-    // Placeholder logic for relevance analysis
-    return 85; // Example relevance score
+    const relevantKeywords = ['Halkipedia', 'AI', 'knowledge', 'content', 'quality'];
+    let relevanceScore = 0;
+
+    relevantKeywords.forEach(keyword => {
+        if (content.includes(keyword)) {
+            relevanceScore += 20; // Increase score for each keyword found
+        }
+    });
+
+    // Ensure the score is within the range of 0 to 100
+    relevanceScore = Math.min(relevanceScore, 100);
+
+    return relevanceScore;
 }
 
 const app = express();

@@ -5,17 +5,21 @@ if (!globalThis.fetch) {
 
 import * as tf from '@tensorflow/tfjs-node';
 import * as qna from '@tensorflow-models/qna';
+import Tokenizer from './tokenizer.js';
 
 // Function to process text content
 export async function processTextContent(text: string): Promise<tf.Tensor> {
     try {
-        // Convert text to tensor
-        const textTensor = tf.tensor1d(text.split('').map(char => char.charCodeAt(0)));
+        // Tokenize text
+        const tokenizer = new Tokenizer();
+        tokenizer.fitOnTexts([text]);
+        const sequences = tokenizer.textsToSequences([text]);
+        const textTensor = tf.tensor2d(sequences, [1, sequences[0].length]);
 
         // Load pre-trained NLP model
         const model = await tf.loadLayersModel('file://./src/NLP/models/model.json');
         // Ensure input shape is specified
-        const inputShape = [1, textTensor.shape[0]];
+        const inputShape = [1, textTensor.shape[1]];
         const predictions = model.predict(textTensor.reshape(inputShape)) as tf.Tensor;
 
         // Log tensor shapes for debugging

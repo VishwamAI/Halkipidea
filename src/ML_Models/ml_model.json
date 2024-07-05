@@ -1,0 +1,28 @@
+{
+  "modelTopology": {
+    "class_name": "Sequential",
+    "config": [
+      {
+        "class_name": "Dense",
+        "config": {
+          "units": 10,
+          "activation": "relu",
+          "inputShape": [5]
+        }
+      },
+      {
+        "class_name": "Dense",
+        "config": {
+          "units": 1,
+          "activation": "sigmoid"
+        }
+      }
+    ]
+  },
+  "weightsManifest": [
+    {
+      "paths": [],
+      "weights": []
+    }
+  ]
+}

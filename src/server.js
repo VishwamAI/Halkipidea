@@ -9,7 +9,7 @@ const { processCMSData } = require('./cmsHandler');
 const { generateRecommendations } = require('./Recommendation_Engine/recommendationEngine');
 const { processUserInteractionData } = require('./User_Interaction/userInteractionHandler');
 // const { processTextContent, generateTextContent } = require('./Natural_Language_Processing/nlpHandler');
-const { processImageContent, processVideoContent } = require('./dist/Computer_Vision/vision_service');
+const { processImageContent, processVideoContent } = require('./Computer_Vision/vision_service');
 const { assessContentQuality } = require('./contentQualityAssessor');
 
 const { answerQuestion, generateTextContent, processTextContent } = require('./Natural_Language_Processing/nlpHandler');
@@ -317,3 +317,5 @@ app.post('/recommendation', (req, res) => {
 app.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`);
 });
+
+module.exports = app; // Export the app instance for testing

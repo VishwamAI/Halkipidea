@@ -1,10 +1,6 @@
 import * as tf from '@tensorflow/tfjs-node';
 import * as qna from '@tensorflow-models/qna';
 import { processTextContent, generateTextContent, answerQuestion } from '../Natural_Language_Processing/nlpHandler';
-import fetch from 'node-fetch';
-
-// Assign node-fetch to global fetch
-global.fetch = fetch;
 
 describe('NLP Handler Functions', () => {
     test('processTextContent should process text and return a tensor', async () => {

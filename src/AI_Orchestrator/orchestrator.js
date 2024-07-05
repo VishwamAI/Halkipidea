@@ -2,6 +2,26 @@ const { processTextContent, generateTextContent, answerQuestion } = require('../
 const { mlModel, cvModel, kgModel } = require('../ML_Models/models');
 const tf = require('@tensorflow/tfjs-node');
 
+let cachedNlpModel;
+let cachedMlModel;
+let cachedCvModel;
+let cachedKgModel;
+
+const loadModels = async () => {
+    if (!cachedNlpModel) {
+        cachedNlpModel = await processTextContent();
+    }
+    if (!cachedMlModel) {
+        cachedMlModel = await mlModel();
+    }
+    if (!cachedCvModel) {
+        cachedCvModel = await cvModel();
+    }
+    if (!cachedKgModel) {
+        cachedKgModel = await kgModel();
+    }
+};
+
 const orchestrateAIModels = async (req, res) => {
     // Extract data from the request body
     const { inputData } = req.body;
@@ -11,13 +31,16 @@ const orchestrateAIModels = async (req, res) => {
         return res.status(400).json({ error: 'Invalid input data' });
     }
 
+    // Load models if not already loaded
+    await loadModels();
+
     // Process text using NLP model
     let nlpResult;
     try {
         if (!inputData.text || typeof inputData.text !== 'string') {
             throw new Error('Invalid text data');
         }
-        nlpResult = await processTextContent(inputData.text);
+        nlpResult = await cachedNlpModel(inputData.text);
     } catch (error) {
         return res.status(500).json({ error: 'Error processing NLP model prediction' });
     }
@@ -28,9 +51,8 @@ const orchestrateAIModels = async (req, res) => {
         if (!Array.isArray(inputData.mlData)) {
             throw new Error('Invalid ML data');
         }
-        const mlModelInstance = await mlModel();
         const tensorInput = tf.tensor(inputData.mlData);
-        mlResult = mlModelInstance.predict(tensorInput);
+        mlResult = cachedMlModel.predict(tensorInput);
     } catch (error) {
         return res.status(500).json({ error: 'Error processing ML model prediction' });
     }
@@ -41,9 +63,8 @@ const orchestrateAIModels = async (req, res) => {
         if (!Array.isArray(inputData.cvData)) {
             throw new Error('Invalid CV data');
         }
-        const cvModelInstance = await cvModel();
         const tensorInput = tf.tensor(inputData.cvData);
-        cvResult = cvModelInstance.predict(tensorInput);
+        cvResult = cachedCvModel.predict(tensorInput);
     } catch (error) {
         return res.status(500).json({ error: 'Error processing CV model prediction' });
     }
@@ -54,9 +75,8 @@ const orchestrateAIModels = async (req, res) => {
         if (!Array.isArray(inputData.kgData)) {
             throw new Error('Invalid KG data');
         }
-        const kgModelInstance = await kgModel();
         const tensorInput = tf.tensor(inputData.kgData);
-        kgResult = kgModelInstance.predict(tensorInput);
+        kgResult = cachedKgModel.predict(tensorInput);
     } catch (error) {
         return res.status(500).json({ error: 'Error processing KG model prediction' });
     }

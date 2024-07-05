@@ -16,7 +16,7 @@ const nlpModel = async () => {
 const mlModel = async () => {
     try {
         // Load pre-trained ML model
-        const model = await tf.loadLayersModel('file://./src/ML_Models/ml_model.json');
+        const model = await tf.loadLayersModel('./src/ML_Models/ml_model.json');
         return model;
     } catch (error) {
         console.error('Error loading ML model:', error);

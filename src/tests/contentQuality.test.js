@@ -63,11 +63,6 @@ function calculateRelevance(content) {
 
 module.exports = { assessContentQuality };
 
-// Move the mock implementation to after the export statement
-jest.spyOn(module.exports, 'assessContentQuality').mockImplementation(() => {
-    throw new Error('Error assessing content quality');
-});
-
 describe('POST /content-quality', () => {
     it('should return 400 if content is not provided', async () => {
         const response = await request(app)
@@ -87,6 +82,9 @@ describe('POST /content-quality', () => {
     });
 
     it('should return 500 if there is an error during content quality assessment', async () => {
+        jest.spyOn(module.exports, 'assessContentQuality').mockImplementation(() => {
+            throw new Error('Error assessing content quality');
+        });
         const content = 'Sample content for quality assessment';
         const response = await request(app)
             .post('/content-quality')

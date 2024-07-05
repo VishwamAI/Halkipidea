@@ -14,7 +14,7 @@ jest.mock('@tensorflow/tfjs-node', () => {
     return {
         ...actualTf,
         loadLayersModel: jest.fn().mockImplementation(() => ({
-            predict: jest.fn().mockReturnValue(tf.tensor([0.1, 0.9]))
+            predict: jest.fn().mockReturnValue(tf.tensor([[0.1, 0.9]]))
         }))
     };
 });
@@ -32,6 +32,6 @@ describe('processImageContent', () => {
         expect(predictions).toBeInstanceOf(tf.Tensor);
 
         // Check if the predictions tensor has the expected shape
-        expect(predictions.shape).toEqual([1, 1000]); // Assuming MobileNet returns 1000 class predictions
+        expect(predictions.shape).toEqual([1, 2]); // Adjusted to match the mocked tensor shape
     });
 });

@@ -5,9 +5,11 @@ const bodyParser = require('body-parser');
 const app = express();
 app.use(bodyParser.json());
 
-jest.spyOn(module.exports, 'assessContentQuality').mockImplementation(() => {
-    throw new Error('Error assessing content quality');
-});
+jest.mock('../contentQualityAssessor', () => ({
+    assessContentQuality: jest.fn(() => {
+        throw new Error('Error assessing content quality');
+    })
+}));
 
 app.post('/content-quality', async (req, res) => {
     const { content } = req.body;

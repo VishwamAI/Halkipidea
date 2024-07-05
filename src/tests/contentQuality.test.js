@@ -62,6 +62,8 @@ function calculateRelevance(content) {
     return relevanceScore;
 }
 
+module.exports = { assessContentQuality };
+
 describe('POST /content-quality', () => {
     it('should return 400 if content is not provided', async () => {
         const response = await request(app)

@@ -15,10 +15,8 @@ const nlpModel = async () => {
 // Placeholder for Machine Learning model
 const mlModel = async () => {
     try {
-        // Mock the ML model loading process for testing
-        const model = {
-            predict: (input) => tf.tensor([0.1, 0.9]) // Mock prediction output
-        };
+        // Load pre-trained ML model
+        const model = await tf.loadLayersModel('file://./src/ML_Models/ml_model.json');
         return model;
     } catch (error) {
         console.error('Error loading ML model:', error);

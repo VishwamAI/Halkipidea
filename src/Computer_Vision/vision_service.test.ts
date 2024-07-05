@@ -6,7 +6,7 @@ import path from 'path';
 describe('processImageContent', () => {
     it('should process an image buffer and return predictions', async () => {
         // Load a sample image buffer for testing
-        const imagePath = path.resolve(__dirname, 'test_image.jpg');
+        const imagePath = path.resolve(__dirname, 'test_image.png');
         const imageBuffer = fs.readFileSync(imagePath);
 
         // Call the processImageContent function

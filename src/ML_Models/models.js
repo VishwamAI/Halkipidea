@@ -4,7 +4,7 @@ const tf = require('@tensorflow/tfjs');
 const nlpModel = async () => {
     try {
         // Load pre-trained NLP model
-        const model = await tf.loadLayersModel('file://path/to/nlp-model.json');
+        const model = await tf.loadLayersModel('file://./src/NLP/models/model.json');
         return model;
     } catch (error) {
         console.error('Error loading NLP model:', error);
@@ -30,7 +30,7 @@ const mlModel = async () => {
 const cvModel = async () => {
     try {
         // Load pre-trained CV model
-        const model = await tf.loadLayersModel('file://path/to/cv-model.json');
+        const model = await tf.loadLayersModel('file://./src/Computer_Vision/models/model.json');
         return model;
     } catch (error) {
         console.error('Error loading CV model:', error);
@@ -42,7 +42,7 @@ const cvModel = async () => {
 const kgModel = async () => {
     try {
         // Load pre-trained KG model
-        const model = await tf.loadLayersModel('file://path/to/kg-model.json');
+        const model = await tf.loadLayersModel('file://./src/Knowledge_Graph/models/model.json');
         return model;
     } catch (error) {
         console.error('Error loading KG model:', error);

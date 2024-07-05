@@ -1,12 +1,16 @@
+// Polyfill fetch for Node.js environment
+global.fetch = require('node-fetch');
+
 import * as tf from '@tensorflow/tfjs-node';
 import * as qna from '@tensorflow-models/qna';
 import { processTextContent, generateTextContent, answerQuestion } from '../Natural_Language_Processing/nlpHandler';
 
 jest.mock('@tensorflow/tfjs-node', () => {
+    const actualTf = jest.requireActual('@tensorflow/tfjs-node');
     return {
-        ...tf,
+        ...actualTf,
         loadLayersModel: jest.fn().mockResolvedValue({
-            predict: jest.fn().mockReturnValue(tf.tensor([0.1, 0.9]))
+            predict: jest.fn().mockReturnValue(actualTf.tensor([0.1, 0.9]))
         })
     };
 });

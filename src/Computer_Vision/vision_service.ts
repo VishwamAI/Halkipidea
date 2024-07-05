@@ -4,7 +4,7 @@ import * as tf from '@tensorflow/tfjs-node';
 export async function processImageContent(imageBuffer: Buffer): Promise<tf.Tensor> {
     try {
         // Decode the image buffer to a tensor
-        const imageTensor = tf.node.decodeImage(imageBuffer);
+        const imageTensor = tf.node.decodeImage(imageBuffer, 3); // Specify 3 channels (RGB)
         const processedImage = imageTensor.div(tf.scalar(255.0));
 
         // Load the pre-trained MobileNet model

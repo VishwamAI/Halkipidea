@@ -5,6 +5,9 @@ interface KnowledgeGraph {
     [key: string]: any;
 }
 
+// Mock in-memory persistence layer for the knowledge graph
+const knowledgeGraph: KnowledgeGraph = {};
+
 // Function to ingest data from external sources
 export async function ingestExternalData(sourceUrl: string): Promise<any> {
     try {
@@ -19,8 +22,6 @@ export async function ingestExternalData(sourceUrl: string): Promise<any> {
 // Function to process and integrate data into the knowledge graph
 export async function integrateDataIntoKG(data: any): Promise<void> {
     try {
-        // Simulate integration into a knowledge graph database
-        const knowledgeGraph: KnowledgeGraph = {}; // Placeholder for the knowledge graph database
         const id = uuidv4();
         knowledgeGraph[id] = data;
         console.log('Data integrated into the knowledge graph:', knowledgeGraph);
@@ -33,8 +34,6 @@ export async function integrateDataIntoKG(data: any): Promise<void> {
 // Function to query the knowledge graph
 export async function queryKnowledgeGraph(query: string): Promise<any> {
     try {
-        // Simulate querying the knowledge graph database
-        const knowledgeGraph: KnowledgeGraph = {}; // Placeholder for the knowledge graph database
         const result = Object.values(knowledgeGraph).filter((entry: any) => {
             // Placeholder logic for matching the query
             return JSON.stringify(entry).includes(query);

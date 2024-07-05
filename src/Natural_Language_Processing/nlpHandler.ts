@@ -1,3 +1,8 @@
+// Polyfill fetch function for Node.js environment
+if (!globalThis.fetch) {
+    globalThis.fetch = require('node-fetch');
+}
+
 import * as tf from '@tensorflow/tfjs-node';
 import * as qna from '@tensorflow-models/qna';
 

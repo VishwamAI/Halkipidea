@@ -2,6 +2,21 @@ import * as tf from '@tensorflow/tfjs-node';
 import * as qna from '@tensorflow-models/qna';
 import { processTextContent, generateTextContent, answerQuestion } from '../Natural_Language_Processing/nlpHandler';
 
+jest.mock('@tensorflow/tfjs-node', () => {
+    return {
+        ...tf,
+        loadLayersModel: jest.fn().mockResolvedValue({
+            predict: jest.fn().mockReturnValue(tf.tensor([0.1, 0.9]))
+        })
+    };
+});
+
+jest.mock('@tensorflow-models/qna', () => ({
+    load: jest.fn().mockResolvedValue({
+        findAnswers: jest.fn().mockResolvedValue([{ text: 'Paris', score: 0.9 }])
+    })
+}));
+
 describe('NLP Handler Functions', () => {
     test('processTextContent should process text and return a tensor', async () => {
         const text = 'Hello, world!';

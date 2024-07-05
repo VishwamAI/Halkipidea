@@ -1,17 +1,10 @@
 const request = require('supertest');
 const express = require('express');
 const bodyParser = require('body-parser');
+const { assessContentQuality } = require('../contentQualityAssessor');
 
 const app = express();
 app.use(bodyParser.json());
-
-async function assessContentQuality(content) {
-    const readabilityScore = calculateReadability(content);
-    const accuracyScore = calculateAccuracy(content);
-    const relevanceScore = calculateRelevance(content);
-    const qualityScore = (readabilityScore + accuracyScore + relevanceScore) / 3;
-    return qualityScore;
-}
 
 app.post('/content-quality', async (req, res) => {
     const { content } = req.body;
@@ -61,8 +54,6 @@ function calculateRelevance(content) {
     return relevanceScore;
 }
 
-module.exports = { assessContentQuality };
-
 describe('POST /content-quality', () => {
     it('should return 400 if content is not provided', async () => {
         const response = await request(app)
@@ -82,7 +73,7 @@ describe('POST /content-quality', () => {
     });
 
     it('should return 500 if there is an error during content quality assessment', async () => {
-        jest.spyOn(module.exports, 'assessContentQuality').mockImplementation(async () => {
+        jest.spyOn(require('../contentQualityAssessor'), 'assessContentQuality').mockImplementation(async () => {
             throw new Error('Error assessing content quality');
         });
         const content = 'Sample content for quality assessment';

@@ -3,12 +3,15 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const tf = require('@tensorflow/tfjs-node');
 
-jest.mock('@tensorflow/tfjs-node', () => ({
-    ...jest.requireActual('@tensorflow/tfjs-node'),
-    loadLayersModel: jest.fn().mockImplementation(() => ({
-        predict: jest.fn().mockReturnValue(tf.tensor([0.1, 0.9]))
-    }))
-}));
+jest.mock('@tensorflow/tfjs-node', () => {
+    const actualTf = jest.requireActual('@tensorflow/tfjs-node');
+    return {
+        ...actualTf,
+        loadLayersModel: jest.fn().mockImplementation(() => ({
+            predict: jest.fn().mockReturnValue({ data: [0.1, 0.9] })
+        }))
+    };
+});
 
 const app = express();
 app.use(bodyParser.json());
@@ -43,7 +46,7 @@ describe('POST /cv', () => {
             .post('/cv')
             .send({ inputData });
         expect(response.status).toBe(200);
-        // Add more assertions based on the expected result of the model prediction
+        expect(response.body).toEqual({ data: [0.1, 0.9] });
     });
 
     it('should return 500 if there is an error during model prediction', async () => {

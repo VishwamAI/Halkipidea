@@ -24,8 +24,12 @@ export async function processImageContent(imageBuffer: Buffer): Promise<tf.Tenso
         console.log('Image tensor shape after normalization:', processedImage.shape);
         console.log('Image tensor dtype after normalization:', processedImage.dtype);
 
+        // Log the path to the model file
+        const modelPath = 'file://./src/Computer_Vision/models/model.json';
+        console.log('Loading model from path:', modelPath);
+
         // Load the pre-trained MobileNet model
-        const model = await tf.loadLayersModel('file://./src/Computer_Vision/models/model.json');
+        const model = await tf.loadLayersModel(modelPath);
         const predictions = model.predict(processedImage.expandDims(0)) as tf.Tensor;
         console.log('Predictions tensor shape:', predictions.shape);
 

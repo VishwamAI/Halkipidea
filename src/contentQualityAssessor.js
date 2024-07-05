@@ -1,38 +1,41 @@
 import * as tf from '@tensorflow/tfjs-node';
 
-// Function to assess content quality
 export async function assessContentQuality(content) {
-    // Placeholder logic for content quality assessment
-    // TODO: Implement actual content quality assessment logic
+    const readabilityScore = calculateReadability(content);
+    const accuracyScore = calculateAccuracy(content);
+    const relevanceScore = calculateRelevance(content);
+    const qualityScore = (readabilityScore + accuracyScore + relevanceScore) / 3;
+    return qualityScore;
+}
 
-    // Example: Calculate readability score using Flesch-Kincaid readability tests
-    const words = content.split(' ').length;
-    const sentences = content.split('.').length;
-    const syllables = content.match(/[aeiouy]{1,2}/g).length;
-
+function calculateReadability(content) {
+    const words = content.split(/\s+/).length;
+    const sentences = content.split(/[.!?]/).length;
+    const syllables = content.split(/[aeiouy]+/).length - 1;
     const readabilityScore = 206.835 - (1.015 * (words / sentences)) - (84.6 * (syllables / words));
+    return readabilityScore;
+}
 
-    // Example: Use a pre-trained model to assess content quality
-    // const model = await tf.loadLayersModel('file://path/to/content-quality-model.json');
-    // const contentTensor = tf.tensor1d(content.split('').map(char => char.charCodeAt(0)));
-    // const qualityScore = model.predict(contentTensor.expandDims(0)).dataSync()[0];
+function calculateAccuracy(content) {
+    const factualKeywords = ['fact', 'data', 'evidence', 'research', 'study'];
+    let accuracyScore = 0;
+    factualKeywords.forEach(keyword => {
+        if (content.includes(keyword)) {
+            accuracyScore += 20;
+        }
+    });
+    accuracyScore = Math.min(accuracyScore, 100);
+    return accuracyScore;
+}
 
-    // Placeholder for more comprehensive content quality assessment
-    // TODO: Integrate a comprehensive content quality assessment model
-    // Steps:
-    // 1. Load a pre-trained content quality assessment model
-    // 2. Preprocess the content to match the model's input requirements
-    // 3. Use the model to predict the quality score
-    // 4. Combine multiple metrics (e.g., readability, grammar, coherence) to form a final quality score
-
-    // Example: Placeholder for grammar check (to be replaced with actual implementation)
-    const grammarScore = 0.8; // Placeholder value
-
-    // Example: Placeholder for coherence check (to be replaced with actual implementation)
-    const coherenceScore = 0.7; // Placeholder value
-
-    // Combine multiple metrics to form a final quality score
-    const finalQualityScore = (readabilityScore + grammarScore + coherenceScore) / 3;
-
-    return finalQualityScore;
+function calculateRelevance(content) {
+    const relevantKeywords = ['Halkipedia', 'AI', 'knowledge', 'content', 'quality'];
+    let relevanceScore = 0;
+    relevantKeywords.forEach(keyword => {
+        if (content.includes(keyword)) {
+            relevanceScore += 20;
+        }
+    });
+    relevanceScore = Math.min(relevanceScore, 100);
+    return relevanceScore;
 }

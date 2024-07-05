@@ -10,25 +10,10 @@ const { generateRecommendations } = require('./Recommendation_Engine/recommendat
 const { processUserInteractionData } = require('./User_Interaction/userInteractionHandler');
 // const { processTextContent, generateTextContent } = require('./Natural_Language_Processing/nlpHandler');
 const { processImageContent, processVideoContent } = require('./dist/Computer_Vision/vision_service');
-
+const { assessContentQuality } = require('./contentQualityAssessor');
 
 const { answerQuestion, generateTextContent } = require('./Natural_Language_Processing/nlpHandler');
 
-async function assessContentQuality(content) {
-    // Analyze content for readability
-    const readabilityScore = calculateReadability(content);
-
-    // Analyze content for accuracy (placeholder logic)
-    const accuracyScore = calculateAccuracy(content);
-
-    // Analyze content for relevance (placeholder logic)
-    const relevanceScore = calculateRelevance(content);
-
-    // Calculate overall quality score
-    const qualityScore = (readabilityScore + accuracyScore + relevanceScore) / 3;
-
-    return qualityScore;
-}
 
 function calculateReadability(content) {
     const words = content.split(/\s+/).length;
@@ -313,6 +298,7 @@ app.post('/content-quality', async (req, res) => {
         const qualityScore = await assessContentQuality(content);
         res.json({ qualityScore });
     } catch (error) {
+        console.error('Error assessing content quality:', error);
         res.status(500).json({ error: 'Error assessing content quality' });
     }
 });

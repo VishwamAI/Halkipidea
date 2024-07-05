@@ -8,7 +8,9 @@ export async function processTextContent(text: string): Promise<tf.Tensor> {
 
     // Load pre-trained NLP model
     const model = await tf.loadLayersModel('file://./src/NLP/models/model.json');
-    const predictions = model.predict(textTensor.expandDims(0)) as tf.Tensor;
+    // Ensure input shape is specified
+    const inputShape = [1, textTensor.shape[0]];
+    const predictions = model.predict(textTensor.reshape(inputShape)) as tf.Tensor;
 
     return predictions;
 }
@@ -20,7 +22,9 @@ export async function generateTextContent(prompt: string): Promise<string> {
 
     // Load pre-trained text generation model
     const model = await tf.loadLayersModel('file://./src/NLP/models/model.json');
-    const generatedTensor = model.predict(promptTensor.expandDims(0)) as tf.Tensor;
+    // Ensure input shape is specified
+    const inputShape = [1, promptTensor.shape[0]];
+    const generatedTensor = model.predict(promptTensor.reshape(inputShape)) as tf.Tensor;
 
     // Convert tensor back to string
     const generatedText = String.fromCharCode(...(await generatedTensor.data()));
@@ -32,7 +36,7 @@ export async function generateTextContent(prompt: string): Promise<string> {
 export async function answerQuestion(question: string, passage: string): Promise<any> {
     // Load the QnA model
     const model = await qna.load({
-        modelUrl: 'file://./src/NLP/models/qna/model.json'
+        modelUrl: 'https://cdn.jsdelivr.net/npm/@tensorflow-models/qna'
     });
 
     // Find the answers

@@ -2,14 +2,12 @@ import * as tf from '@tensorflow/tfjs-node';
 
 // Function to process image content
 export async function processImageContent(imageBuffer: Buffer): Promise<tf.Tensor> {
-    // Placeholder logic for processing image content
+    // Decode the image buffer to a tensor
     const imageTensor = tf.node.decodeImage(imageBuffer);
     const processedImage = imageTensor.div(tf.scalar(255.0));
 
-    // Mock the MobileNet model loading process for testing
-    const model = {
-        predict: (input: tf.Tensor) => tf.tensor([0.1, 0.9]) // Mock prediction output
-    };
+    // Load the pre-trained MobileNet model
+    const model = await tf.loadLayersModel('https://github.com/VishwamAI/Halkipidea/releases/download/v1.0.0/model.json');
     const predictions = model.predict(processedImage.expandDims(0)) as tf.Tensor;
 
     return predictions;

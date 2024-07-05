@@ -12,7 +12,7 @@ const { processUserInteractionData } = require('./User_Interaction/userInteracti
 const { processImageContent, processVideoContent } = require('./dist/Computer_Vision/vision_service');
 const { assessContentQuality } = require('./contentQualityAssessor');
 
-const { answerQuestion, generateTextContent } = require('./Natural_Language_Processing/nlpHandler');
+const { answerQuestion, generateTextContent, processTextContent } = require('./Natural_Language_Processing/nlpHandler');
 
 
 function calculateReadability(content) {
@@ -79,7 +79,7 @@ app.post('/nlp', async (req, res) => {
         return res.status(400).json({ error: 'Invalid text input' });
     }
     try {
-        const result = await processText(text);
+        const result = await processTextContent(text);
         res.json(result);
     } catch (error) {
         res.status(500).json({ error: 'Error processing NLP model prediction' });

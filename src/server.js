@@ -241,14 +241,18 @@ app.post('/automated-content', async (req, res) => {
     }
 });
 
-app.post('/content-quality', (req, res) => {
+app.post('/content-quality', async (req, res) => {
     const { content } = req.body;
     if (!content) {
         return res.status(400).json({ error: 'Invalid content input' });
     }
-    // Placeholder logic for content quality assessment
-    const qualityScore = Math.random() * 10; // Simulate a quality score
-    res.json({ qualityScore });
+    try {
+        // Implement content quality assessment logic
+        const qualityScore = await assessContentQuality(content);
+        res.json({ qualityScore });
+    } catch (error) {
+        res.status(500).json({ error: 'Error assessing content quality' });
+    }
 });
 
 // Recommendation Engine route

@@ -3,6 +3,11 @@ import { processImageContent } from './vision_service';
 import fs from 'fs';
 import path from 'path';
 
+// Polyfill fetch for TensorFlow.js
+if (!globalThis.fetch) {
+    globalThis.fetch = require('node-fetch');
+}
+
 describe('processImageContent', () => {
     it('should process an image buffer and return predictions', async () => {
         // Load a sample image buffer for testing

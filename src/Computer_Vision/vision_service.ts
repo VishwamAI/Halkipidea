@@ -3,13 +3,31 @@ import * as tf from '@tensorflow/tfjs-node';
 // Function to process image content
 export async function processImageContent(imageBuffer: Buffer): Promise<tf.Tensor> {
     try {
+        // Log the first few bytes of the image buffer for debugging
+        console.log('First few bytes of image buffer:', imageBuffer.slice(0, 20));
+
+        // Convert the image buffer to a base64 string for inspection
+        const base64Image = imageBuffer.toString('base64');
+        console.log('Base64 image string:', base64Image.slice(0, 100)); // Log the first 100 characters
+
+        // Convert the Node.js Buffer to a Uint8Array
+        const uint8Array = new Uint8Array(imageBuffer);
+
         // Decode the image buffer to a tensor
-        const imageTensor = tf.node.decodeImage(imageBuffer, 3); // Specify 3 channels (RGB)
+        console.log('Attempting to decode image buffer to tensor...');
+        const imageTensor = await tf.node.decodeImage(uint8Array, 3); // Specify 3 channels (RGB)
+        console.log('Image tensor shape after decoding:', imageTensor.shape);
+        console.log('Image tensor dtype after decoding:', imageTensor.dtype);
+
+        // Normalize the image tensor
         const processedImage = imageTensor.div(tf.scalar(255.0));
+        console.log('Image tensor shape after normalization:', processedImage.shape);
+        console.log('Image tensor dtype after normalization:', processedImage.dtype);
 
         // Load the pre-trained MobileNet model
-        const model = await tf.loadLayersModel('file://./src/Computer_Vision/model.json');
+        const model = await tf.loadLayersModel('file://./src/Computer_Vision/models/model.json');
         const predictions = model.predict(processedImage.expandDims(0)) as tf.Tensor;
+        console.log('Predictions tensor shape:', predictions.shape);
 
         return predictions;
     } catch (error) {
@@ -36,4 +54,3 @@ export async function processVideoContent(videoBuffer: Buffer): Promise<tf.Tenso
 // TODO: Specify the correct path to the pre-trained model JSON files for both image and video recognition models.
 // TODO: Implement the logic for extracting video frames from the video buffer in the processVideoContent function.
 // TODO: Ensure that the models are available at the specified paths or set up a process to train the models if they are not already available.
-// TODO: Test the functions to ensure they are processing the image and video data correctly and making accurate predictions.

@@ -205,8 +205,12 @@ app.post('/cms', (req, res) => {
     if (!contentData) {
         return res.status(400).json({ error: 'Invalid content data' });
     }
-    const result = processCMSData(contentData);
-    res.json(result);
+    try {
+        const result = processCMSData(contentData);
+        res.json(result);
+    } catch (error) {
+        res.status(500).json({ error: 'Error processing CMS data' });
+    }
 });
 
 // Placeholder routes for additional components

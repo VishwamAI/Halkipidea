@@ -1,11 +1,19 @@
 const request = require('supertest');
-const app = require('../server'); // Import the actual server instance
 
 describe('POST /content-quality', () => {
     let server;
     let port;
+    let app;
 
     beforeAll((done) => {
+        // Mock the assessContentQuality function before importing the server
+        jest.spyOn(require('../contentQualityAssessor'), 'assessContentQuality').mockImplementation(async () => {
+            console.log('Mock assessContentQuality called');
+            throw new Error('Error assessing content quality');
+        });
+
+        app = require('../server'); // Import the actual server instance after mocking
+
         server = app.listen(0, () => {
             port = server.address().port;
             console.log(`Test server running on port ${port}`);
@@ -42,10 +50,6 @@ describe('POST /content-quality', () => {
     });
 
     it('should return 500 if there is an error during content quality assessment', async () => {
-        const mockAssessContentQuality = jest.spyOn(require('../contentQualityAssessor'), 'assessContentQuality').mockImplementation(async () => {
-            console.log('Mock assessContentQuality called');
-            throw new Error('Error assessing content quality');
-        });
         const content = 'Sample content for quality assessment';
         const response = await request(app)
             .post('/content-quality')
@@ -54,6 +58,5 @@ describe('POST /content-quality', () => {
         console.log('Response body:', response.body);
         expect(response.status).toBe(500);
         expect(response.body.error).toBe('Error assessing content quality');
-        mockAssessContentQuality.mockRestore();
     });
 });

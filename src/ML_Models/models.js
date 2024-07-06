@@ -1,10 +1,12 @@
 const tf = require('@tensorflow/tfjs');
+const path = require('path');
 
 // Placeholder for Natural Language Processing model
 const nlpModel = async () => {
     try {
         // Load pre-trained NLP model
-        const model = await tf.loadLayersModel('file://./src/NLP/models/model.json');
+        const modelPath = path.resolve(__dirname, './src/NLP/models/model.json');
+        const model = await tf.loadLayersModel(`file://${modelPath}`);
         return model;
     } catch (error) {
         console.error('Error loading NLP model:', error);
@@ -16,7 +18,8 @@ const nlpModel = async () => {
 const mlModel = async () => {
     try {
         // Load pre-trained ML model
-        const model = await tf.loadLayersModel('./src/ML_Models/ml_model.json');
+        const modelPath = path.resolve(__dirname, './src/ML_Models/ml_model.json');
+        const model = await tf.loadLayersModel(`file://${modelPath}`);
         return model;
     } catch (error) {
         console.error('Error loading ML model:', error);
@@ -28,7 +31,8 @@ const mlModel = async () => {
 const cvModel = async () => {
     try {
         // Load pre-trained CV model
-        const model = await tf.loadLayersModel('file://./src/Computer_Vision/models/model.json');
+        const modelPath = path.resolve(__dirname, './src/Computer_Vision/models/model.json');
+        const model = await tf.loadLayersModel(`file://${modelPath}`);
         return model;
     } catch (error) {
         console.error('Error loading CV model:', error);
@@ -40,7 +44,8 @@ const cvModel = async () => {
 const kgModel = async () => {
     try {
         // Load pre-trained KG model
-        const model = await tf.loadLayersModel('file://./src/Knowledge_Graph/models/mock_kg_model.json');
+        const modelPath = path.resolve(__dirname, './src/Knowledge_Graph/models/mock_kg_model.json');
+        const model = await tf.loadLayersModel(`file://${modelPath}`);
         return model;
     } catch (error) {
         console.error('Error loading KG model:', error);

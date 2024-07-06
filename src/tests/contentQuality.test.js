@@ -2,6 +2,18 @@ const request = require('supertest');
 const app = require('../server'); // Import the actual server instance
 
 describe('POST /content-quality', () => {
+    let server;
+
+    beforeAll(() => {
+        server = app.listen(3000, () => {
+            console.log('Test server running on port 3000');
+        });
+    });
+
+    afterAll((done) => {
+        server.close(done);
+    });
+
     it('should return 400 if content is not provided', async () => {
         const response = await request(app)
             .post('/content-quality')

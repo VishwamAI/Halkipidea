@@ -42,7 +42,7 @@ describe('Tokenizer', () => {
         const texts = ['Hello, World!', 'Goodbye, World!'];
         tokenizer.fitOnTexts(texts);
         const json = tokenizer.toJson();
-        const newTokenizer = tokenizerFromJson(json);
+        const newTokenizer = Tokenizer.fromJson(json);
         const sequences = newTokenizer.textsToSequences(texts);
         expect(sequences.length).toBe(2);
         expect(sequences[0].length).toBeGreaterThan(0);

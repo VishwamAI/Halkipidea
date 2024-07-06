@@ -55,8 +55,11 @@ function processImageContent(imageBuffer) {
             const processedImage = imageTensor.div(tf.scalar(255.0));
             console.log('Image tensor shape after normalization:', processedImage.shape);
             console.log('Image tensor dtype after normalization:', processedImage.dtype);
+            // Log the path to the model file
+            const modelPath = 'file://./src/Computer_Vision/models/model.json';
+            console.log('Loading model from path:', modelPath);
             // Load the pre-trained MobileNet model
-            const model = yield tf.loadLayersModel('file://./src/Computer_Vision/models/model.json');
+            const model = yield tf.loadLayersModel(modelPath);
             const predictions = model.predict(processedImage.expandDims(0));
             console.log('Predictions tensor shape:', predictions.shape);
             return predictions;

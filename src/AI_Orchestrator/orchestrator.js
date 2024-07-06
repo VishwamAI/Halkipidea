@@ -1,4 +1,4 @@
-const { processTextContent, generateTextContent, answerQuestion } = require('../Natural_Language_Processing/nlpHandler');
+const { processTextContent, generateTextContent, answerQuestion } = require('../../dist/Natural_Language_Processing/nlpHandler.js');
 const { mlModel, cvModel, kgModel } = require('../ML_Models/models');
 const tf = require('@tensorflow/tfjs-node');
 

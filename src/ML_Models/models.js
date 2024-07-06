@@ -5,7 +5,7 @@ const path = require('path');
 const nlpModel = async () => {
     try {
         // Load pre-trained NLP model
-        const modelPath = path.resolve(__dirname, './src/NLP/models/model.json');
+        const modelPath = path.resolve(__dirname, '../NLP/models/model.json');
         const model = await tf.loadLayersModel(`file://${modelPath}`);
         return model;
     } catch (error) {
@@ -18,7 +18,7 @@ const nlpModel = async () => {
 const mlModel = async () => {
     try {
         // Load pre-trained ML model
-        const modelPath = path.resolve(__dirname, './src/ML_Models/ml_model.json');
+        const modelPath = path.resolve(__dirname, 'ml_model.json');
         const model = await tf.loadLayersModel(`file://${modelPath}`);
         return model;
     } catch (error) {
@@ -31,7 +31,7 @@ const mlModel = async () => {
 const cvModel = async () => {
     try {
         // Load pre-trained CV model
-        const modelPath = path.resolve(__dirname, './src/Computer_Vision/models/model.json');
+        const modelPath = path.resolve(__dirname, '../Computer_Vision/models/model.json');
         const model = await tf.loadLayersModel(`file://${modelPath}`);
         return model;
     } catch (error) {
@@ -44,7 +44,7 @@ const cvModel = async () => {
 const kgModel = async () => {
     try {
         // Load pre-trained KG model
-        const modelPath = path.resolve(__dirname, './src/Knowledge_Graph/models/mock_kg_model.json');
+        const modelPath = path.resolve(__dirname, '../Knowledge_Graph/models/mock_kg_model.json');
         const model = await tf.loadLayersModel(`file://${modelPath}`);
         return model;
     } catch (error) {

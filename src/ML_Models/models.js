@@ -1,5 +1,6 @@
 const tf = require('@tensorflow/tfjs-node');
 const path = require('path');
+const mobilenet = require('@tensorflow-models/mobilenet');
 
 // Placeholder for Natural Language Processing model
 const nlpModel = async () => {
@@ -15,16 +16,15 @@ const nlpModel = async () => {
     }
 };
 
-// Placeholder for Machine Learning model
+// Load MobileNet model for Machine Learning
 const mlModel = async () => {
     try {
-        // Load pre-trained ML model
-        const modelPath = path.resolve(__dirname, 'ml_model.json');
-        console.log('ML Model Path:', modelPath);
-        const model = await tf.loadLayersModel(`file://${modelPath}`, { onProgress: console.log });
+        // Load MobileNet model
+        const model = await mobilenet.load();
+        console.log('MobileNet model loaded successfully');
         return model;
     } catch (error) {
-        console.error('Error loading ML model:', error);
+        console.error('Error loading MobileNet model:', error);
         throw error;
     }
 };

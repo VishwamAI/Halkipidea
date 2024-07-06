@@ -16,14 +16,14 @@ afterAll((done) => {
 });
 
 describe('mlModel', () => {
-    it('should load the ML model without errors', async () => {
+    it('should load the MobileNet model without errors', async () => {
         try {
             const model = await mlModel();
             expect(model).toBeDefined();
-            expect(model.layers).toBeDefined();
-            expect(model.layers.length).toBeGreaterThan(0);
+            expect(model.classify).toBeDefined();
+            expect(typeof model.classify).toBe('function');
         } catch (error) {
-            throw new Error('Failed to load ML model: ' + error.message);
+            throw new Error('Failed to load MobileNet model: ' + error.message);
         }
     });
 });

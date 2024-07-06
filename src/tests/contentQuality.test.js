@@ -3,10 +3,13 @@ const app = require('../server'); // Import the actual server instance
 
 describe('POST /content-quality', () => {
     let server;
+    let port;
 
-    beforeAll(() => {
-        server = app.listen(3000, () => {
-            console.log('Test server running on port 3000');
+    beforeAll((done) => {
+        server = app.listen(0, () => {
+            port = server.address().port;
+            console.log(`Test server running on port ${port}`);
+            done();
         });
     });
 
